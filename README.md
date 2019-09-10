@@ -37,6 +37,32 @@ do the initial work.  These steps are outlined in the [GN Build Instructions](ht
 Once you've set up `depot_tools` and run `gclient config` you just need to create a `config.yml` file in the root of this repository.
 You can see `config.example.yml` for what information you need to fill out.  Once that file is ready just run `e generate-config`.
 
+## Cached builds (optional step)
+​
+### GIT\_CACHE\_PATH
+​
+If you plan on building Electron more than once, adding a git cache will
+speed up subsequent calls to `gclient`. To do this, set a `GIT_CACHE_PATH`
+environment variable:
+​
+```sh
+$ export GIT_CACHE_PATH="${HOME}/.git_cache"
+$ mkdir -p "${GIT_CACHE_PATH}"
+# This will use about 16G.
+```
+​
+### sccache
+​
+Thousands of files must be compiled to build Chromium and Electron.
+You can avoid much of the wait by reusing Electron CI's build output via
+[sccache](https://github.com/mozilla/sccache). This requires some
+optional steps (listed below) and these two environment variables:
+​
+```sh
+export SCCACHE_BUCKET="electronjs-sccache"
+export SCCACHE_TWO_TIER=true
+```
+
 You're now ready to go!!
 
 ## Just make it go
