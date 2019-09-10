@@ -28,7 +28,7 @@ set PATH="%PATH%;"
 This toolset does not yet have the ability to initialize an Electron GN setup from scratch so you'll have to
 do the initial work.  These steps are outlined in the [GN Build Instructions](https://github.com/electron/electron/blob/master/docs/development/build-instructions-gn.md) and summarized below.
 
-1. [Setup `depot_tools`]() for your system, ensure it's added to your path
+1. [Setup `depot_tools`](https://commondatastorage.googleapis.com/chrome-infra-docs/flat/depot_tools/docs/html/depot_tools_tutorial.html#_setting_up) for your system, ensure it's added to your path
   i) Don't worry about setting `DEPOT_TOOLS_WIN_TOOLCHAIN=0` on Windows
 2. Initialize a repository with `gclient config`
   i) `mkdir electron-gn && cd electron-gn && gclient config --name "src/electron" --unmanaged https://github.com/electron/electron`
