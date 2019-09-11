@@ -4,7 +4,7 @@
 electronRoot: /Users/me/projects/electron-gn
 
 # The path to a directory to use as your chromium git cache, this directory must exist
-gitCachePath: .git-cache
+gitCachePath: .git_cache
 
 # (Optional): The name of the "out/X" directory to use, default is "Debug"
 # electronOutDir: Debug
