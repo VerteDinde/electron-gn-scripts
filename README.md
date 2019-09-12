@@ -30,42 +30,23 @@ do the initial work.  These steps are outlined in the [GN Build Instructions](ht
 
 1. [Setup `depot_tools`](https://commondatastorage.googleapis.com/chrome-infra-docs/flat/depot_tools/docs/html/depot_tools_tutorial.html#_setting_up) for your system, ensure it's added to your path
   i) Don't worry about setting `DEPOT_TOOLS_WIN_TOOLCHAIN=0` on Windows
-2. Initialize a repository with `gclient config`
-  i) `mkdir electron-gn && cd electron-gn && gclient config --name "src/electron" --unmanaged https://github.com/electron/electron`
-3. That's it, yup, `e` will take over from here
-
-Once you've set up `depot_tools` and run `gclient config` you just need to create a `config.yml` file in the root of this repository.
-You can see `config.example.yml` for what information you need to fill out.  Once that file is ready just run `e generate-config`.
-
-## Cached builds (optional step)
-​
-### GIT\_CACHE\_PATH
-​
-If you plan on building Electron more than once, adding a git cache will
-speed up subsequent calls to `gclient`. To do this, set a `GIT_CACHE_PATH`
-environment variable:
-​
+2. (Optional) If you plan on building Electron more than once, add a git_cache:
 ```sh
 $ export GIT_CACHE_PATH="${HOME}/.git_cache"
 $ mkdir -p "${GIT_CACHE_PATH}"
 # This will use about 16G.
 ```
-​
-### sccache
-​
-Thousands of files must be compiled to build Chromium and Electron.
-You can avoid much of the wait by reusing Electron CI's build output via
-[sccache](https://github.com/mozilla/sccache). This requires some
-optional steps (listed below) and these two environment variables:
-​
-```sh
-export SCCACHE_BUCKET="electronjs-sccache"
-export SCCACHE_TWO_TIER=true
-```
+3. Initialize a repository with `gclient config`
+  i) `mkdir electron-gn && cd electron-gn && gclient config --name "src/electron" --unmanaged https://github.com/electron/electron`
+4. That's it, yup, `e` will take over from here
+
+Once you've set up `depot_tools` and run `gclient config` you just need to create a `config.yml` file in the root of this repository.
+You can see `config.example.yml` for what information you need to fill out.
+Once that file is ready, run `e generate-config`.
 
 You're now ready to go!!
 
-## Just make it go
+## Make it go
 
 ```bash
 e sync
@@ -73,6 +54,18 @@ e bootstrap
 e build
 e start
 ```
+
+Both `e sync` and `e build` will take roughly ~30-40 minutes.
+
+## Errors on First Install
+
+**Python:** Make sure that your system and Python version support at least TLS 1.2 by following these instructions: https://github.com/electron/electron/blob/master/docs/development/build-instructions-macos.md#python
+
+**Unstashed Git Commits:** If the `e sync` is interrupted either manually or by internet loss, you may need to reset the cache by running `e sync` with the `--break_repo_locks` flag. More often, though, it's easier to nuke the repo and start again.
+
+**`e sync` is not working/no `src` folder:** Run `gclient sync --with_branch_heads --with_tags -vvvvv` within `electron-gn` instead.
+
+**`e boostrap: gn.py: Could not find gn executable at`:** Set your buildtools path with: `export CHROMIUM_BUILDTOOLS_PATH=${pwd}/buildtools`.
 
 ## Usage
 
@@ -168,3 +161,29 @@ e build
 ```
 
 You can have as many config files as you want and switch to them at any time using `evm $CONFIG_NAME`.
+
+## Cached builds (optional step)
+​
+### GIT\_CACHE\_PATH
+​
+If you plan on building Electron more than once, adding a git cache will
+speed up subsequent calls to `gclient`. To do this, set a `GIT_CACHE_PATH`
+environment variable:
+​
+```sh
+$ export GIT_CACHE_PATH="${HOME}/.git_cache"
+$ mkdir -p "${GIT_CACHE_PATH}"
+# This will use about 16G.
+```
+​
+### sccache
+​
+Thousands of files must be compiled to build Chromium and Electron.
+You can avoid much of the wait by reusing Electron CI's build output via
+[sccache](https://github.com/mozilla/sccache). This requires some
+optional steps (listed below) and these two environment variables:
+​
+```sh
+export SCCACHE_BUCKET="electronjs-sccache"
+export SCCACHE_TWO_TIER=true
+```
