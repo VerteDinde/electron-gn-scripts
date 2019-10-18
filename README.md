@@ -40,8 +40,8 @@ $ mkdir -p "${GIT_CACHE_PATH}"
   i) `mkdir electron-gn && cd electron-gn && gclient config --name "src/electron" --unmanaged https://github.com/electron/electron`
 4. That's it, yup, `e` will take over from here
 
-Once you've set up `depot_tools` and run `gclient config` you just need to create a `config.yml` file in the root of this repository.
-You can see `config.example.yml` for what information you need to fill out.
+Once you've set up `depot_tools` and run `gclient config` you just need to create a `config.*.yml` file in the root of this repository.  Replace `*` with the name of your config.  Something like `config.master.yml` is normally a good idea, or `config.6.yml` for a config specific to Electron 6.
+You can see `config.example.yml` for what information you need to fill out.  Once that file is ready just run `evm {config_name}`.  I.e. `evm master`
 Once that file is ready, run `e generate-config`.
 
 You're now ready to go!!
@@ -70,11 +70,6 @@ Both `e sync` and `e build` will take roughly ~30-40 minutes.
 ## Usage
 
 The main command is just called `e`, all sub-commands are `git` sub-command style.  I.e. `e command ...args`
-
-### `e generate-config`
-
-Generates the configuration files based on your `config.yml` that all the other commands require.  If you don't run this at least
-once all the other commands will fail.
 
 ### `e sync`
 
